@@ -33,7 +33,7 @@ class Press extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: .15.ofWidth),
+      margin: EdgeInsets.symmetric(horizontal: .1.ofWidth),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -48,7 +48,7 @@ class Press extends StatelessWidget {
               : Expanded(
                   child: ElevatedButton(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: loading
                           ? SizedBox(
                               child: CircularProgressIndicator(),
@@ -65,8 +65,10 @@ class Press extends StatelessWidget {
                     onPressed: loading ? null : onPressed,
                     style: ElevatedButton.styleFrom(
                         primary: background,
+                        shadowColor: background,
+                        elevation: 5,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(30),
                         )),
                   ),
                 ),

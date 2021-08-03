@@ -33,4 +33,8 @@ class J extends GetxController {
     Get.snackbar("Error", e,
         colorText: Colors.white, backgroundColor: Colors.red, barBlur: 5);
   }
+
+  static void info(String e) {
+    Get.snackbar("Info", e, barBlur: 5);
+  }
 }

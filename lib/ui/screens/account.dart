@@ -24,12 +24,16 @@ class Account extends StatelessWidget {
                         color: primary,
                       ),
                     )
-                  : CachedNetworkImage(
-                      imageUrl: J.auth.currentUser!.value!.picture!,
-                      fit: BoxFit.cover,
-                      placeholder: (context, _) =>
-                          Center(child: CircularProgressIndicator()),
-                    ),
+                  : Center(
+                    child: CachedNetworkImage(
+                      height: .4.ofHeight,
+                        width: double.infinity,
+                        imageUrl: J.auth.currentUser!.value!.picture!,
+                        fit: BoxFit.cover,
+                        placeholder: (context, _) =>
+                            Center(child: CircularProgressIndicator()),
+                      ),
+                  ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -56,7 +60,7 @@ class Account extends StatelessWidget {
                             fontSize: 17),
                       ),
                       Text(
-                        "Field Agent",
+                        J.me!.roleString,
                         style: TextStyle(color: Colors.grey[300]),
                       )
                     ],

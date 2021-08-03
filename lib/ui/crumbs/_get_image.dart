@@ -41,7 +41,7 @@ class CollectImage extends StatelessWidget {
             onTap: () async {
               Get.back();
               PickedFile? f =
-                  await ImagePicker().getImage(source: ImageSource.gallery);
+                  await ImagePicker().getImage(source: ImageSource.camera);
               if (f != null) onSelect(File(f.path));
             },
           ),

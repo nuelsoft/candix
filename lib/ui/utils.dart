@@ -1,5 +1,8 @@
+import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 extension heightExtension on double {
   double get ofHeight => MediaQuery.of(context).size.height * this;
@@ -35,4 +38,9 @@ class Space extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(height: height, width: width);
   }
+}
+
+extension numFormatter on num {
+  String get format =>
+      NumberFormat("#,###.##").format(this);
 }

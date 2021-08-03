@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,11 +8,13 @@ class API extends GetConnect {
   String get base => "https://candix-erp.herokuapp.com";
 
   String uri(String u) {
-    return '$base/api/$u';
+    String locator =  '$base/api/$u';
+    print(locator);
+    return locator;
   }
 
   NetworkResponse parse(Response r, {String? message}) {
-    print(r.body);
+    log(r.body.toString());
     return NetworkResponse(
         r.body is String || r.statusCode.toString().startsWith('5')
             ? {
@@ -34,7 +38,7 @@ class NetworkResponse {
   Map<String, dynamic>? response;
 
   NetworkResponse(Map<String, dynamic>? res, [this.code])
-      : succeed = res?["error"] == false || res?["error"] == null && res?["success"] != false,
+      : succeed = res?["error"] == false || (res?["error"] == null && res?["success"] == true),
         generalMessage = res?["message"],
         errors = res?["errors"] is List && res?["success"] == false
             ? [res?["message"]]
@@ -48,8 +52,8 @@ class NetworkResponse {
   void log([String? message]) {
     if (!succeed) {
       print("[$code] $generalMessage \n$errors");
-      // Get.snackbar("Error", firstError,
-      //     backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar("Error", firstError,
+          backgroundColor: Colors.red, colorText: Colors.white);
     }else if (message != null) {
       // Get.snackbar("Success", message,
       //     backgroundColor: Colors.green, colorText: Colors.white);

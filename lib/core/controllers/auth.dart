@@ -5,8 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class Authenticator extends GetxController {
-  TextEditingController email = TextEditingController(text: "nuel.mailbox@gmail.com");
-  TextEditingController password = TextEditingController(text: "CandixERP1234");
+  TextEditingController email = TextEditingController(
+      // text:
+  // "nuel.mailbox@gmail.com"
+  );
+  TextEditingController password = TextEditingController(
+      // text:
+  // "CandixERP1234"
+  );
 
   String? token;
 

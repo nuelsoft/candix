@@ -24,7 +24,9 @@ class LineItemizer extends StatelessWidget {
             for (Rx<LineItem> item in J.pr.lineItems)
               ListTile(
                 title: Text(item.value!.title!),
-                subtitle: Text(item.value!.description!),
+                subtitle: item.value!.description?.trim().isEmpty ?? true
+                    ? null
+                    : Text(item.value!.description!),
                 trailing: IconButton(
                   icon: Icon(PhosphorIcons.trash),
                   onPressed: () {
@@ -37,26 +39,37 @@ class LineItemizer extends StatelessWidget {
                         item.value = v;
                       }));
                 },
-                leading: Hero(
-                  tag: item.value!.image!,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      child: CachedNetworkImage(
-                        imageUrl: item.value!.image!,
-                        placeholder: (context, _) => Center(
+                leading: item.value!.image == null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(color: Colors.grey),
+                          child: Center(child: Icon(PhosphorIcons.package)),
+                        ),
+                      )
+                    : Hero(
+                        tag: item.value!.image!,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.grey),
-                            child: Center(child: Icon(PhosphorIcons.package)),
+                            height: 50,
+                            width: 50,
+                            child: CachedNetworkImage(
+                              imageUrl: item.value!.image!,
+                              placeholder: (context, _) => Center(
+                                child: Container(
+                                  decoration: BoxDecoration(color: Colors.grey),
+                                  child: Center(
+                                      child: Icon(PhosphorIcons.package)),
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
-                ),
               ),
             if (J.pr.lineItems.isNotEmpty) ...[Space.Y(20), Divider()],
             ListTile(

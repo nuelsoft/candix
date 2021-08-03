@@ -4,6 +4,7 @@ import 'package:candix/ui/crumbs/button.dart';
 import 'package:candix/ui/crumbs/input.dart';
 import 'package:candix/ui/screens/forgot_password.dart';
 import 'package:candix/ui/screens/home.dart';
+import 'package:candix/ui/screens/no_roles.dart';
 import 'package:candix/ui/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -71,12 +72,18 @@ class Login extends StatelessWidget {
                             if (form.currentState?.validate() ?? false)
                               J.auth.login().then((_) {
                                 if (J.me != null) {
+
+                                  if(J.me!.roles!.isEmpty) {
+                                    return Get.toNamed(YouHaveNoRoles.uri);
+                                  }
+
                                   J.pr.fetchRequests();
                                   Get.toNamed(Home.uri);
                                 }
                               });
                           },
-                        ))
+                        )),
+                    Space.Y(.1.ofHeight)
                   ]),
             ),
           )

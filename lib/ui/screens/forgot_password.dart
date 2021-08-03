@@ -49,7 +49,8 @@ class ForgotPassword extends StatelessWidget {
                         },
                       ))
                 ]),
-          )
+          ),
+          Space.Y(.1.ofHeight)
         ],
       ),
     );

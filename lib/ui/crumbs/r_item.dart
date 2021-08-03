@@ -27,17 +27,19 @@ class RequestItem extends StatelessWidget {
           ? Color(0xFFD21CD6)
           : Color(0xFF938DEB);
 
-  Color get _status => r!.status == PRStatus.pending
-      ? Color(0xFFFA983E)
-      : r!.status == PRStatus.approved
+  Color get _status => r!.status == PRStatus.rejected
+      ? Color(0xFFD61C1C)
+      : r!.status == PRStatus.approved || r!.status == PRStatus.processed
           ? Color(0xFF0E8E55)
-          : Color(0xFFD61C1C);
+          : Color(0xFFFA983E);
 
-  IconData get _icon => r!.status == PRStatus.pending
-      ? PhosphorIcons.hourglass_medium_fill
-      : r!.status == PRStatus.approved
+  IconData get _icon => r!.status == PRStatus.rejected
+      ? PhosphorIcons.x
+      : r!.status == PRStatus.approved || r!.status == PRStatus.processed
           ? PhosphorIcons.check
-          : PhosphorIcons.x;
+          : r!.status == PRStatus.reviewed
+              ? PhosphorIcons.eye
+              : PhosphorIcons.hourglass_medium_fill;
 
   @override
   Widget build(BuildContext context) {
@@ -48,53 +50,21 @@ class RequestItem extends StatelessWidget {
               J.pr.reset(r);
               Get.toNamed(RequestView.uri);
             },
-      child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        height: main
-            ? null
-            : shimmer
-                ? 190
-                : 170 +
-                    (r!.staff?.id != J.me!.id ? 30 : 0) +
-                    (9 *
-                        ((r!.descLength / 20) < 1
-                            ? 1
-                            : (r!.descLength / 19))),
-        child: Row(
-          children: [
-            if (!main) ...[
-              Column(
-                children: [
-                  if (shimmer)
-                    Shimmer.fromColors(
-                        child: Container(
-                          width: 30,
-                          height: 15,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                        ),
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[200]!)
-                  else
-                    Text(
-                      r!.date,
-                    ),
-                  Space.Y(10),
-                  Expanded(
-                      child: Container(
-                    width: 1,
-                    color: shimmer ? Colors.grey : _status,
-                  ))
-                ],
-              ),
-              Space.X(16),
-            ],
-            Expanded(
-                child: Container(
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 16,
+            ).add(EdgeInsets.only(left: !main ? 8 : 0)),
+            padding: !main ? EdgeInsets.only(left: 30) : EdgeInsets.zero,
+            decoration: BoxDecoration(
+                border: Border(
+                    left: !main
+                        ? BorderSide(
+                            width: 1, color: shimmer ? Colors.grey : _status)
+                        : BorderSide.none)),
+            child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               decoration: BoxDecoration(
                   color: shimmer ? Colors.transparent : Colors.white,
@@ -205,9 +175,28 @@ class RequestItem extends StatelessWidget {
                   ]
                 ],
               ),
-            ))
-          ],
-        ),
+            ),
+          ),
+          if (!main)
+            Container(
+              padding: EdgeInsets.all(8),
+              color: milder,
+              child: (shimmer)
+                  ? Shimmer.fromColors(
+                      child: Container(
+                        width: 30,
+                        height: 15,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[200]!)
+                  : Text(
+                      r!.date,
+                    ),
+            )
+        ],
       ),
     );
   }
